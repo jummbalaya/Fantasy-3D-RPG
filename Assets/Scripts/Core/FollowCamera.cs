@@ -1,64 +1,78 @@
 using UnityEngine;
 
-namespace Core
+public class FollowCamera : MonoBehaviour
 {
-    public class FollowCamera : MonoBehaviour
+    [Header("Camera Positioning")]
+    [SerializeField] private Transform player; // Reference to the player
+    [SerializeField] private float followSpeed = 5f; // Speed of smooth following
+    [SerializeField] private float rotationSpeed = 10f; // Speed of camera rotation
+    [SerializeField] private float scrollSensitivity = 2f; // Sensitivity for zooming
+    
+    [Header("Zoom Settings")]
+    [SerializeField] private float minZoom = 5f; // Minimum distance for zooming
+    [SerializeField] private float maxZoom = 20f; // Maximum distance for zooming
+
+    private Vector3 offset; // Initial offset from the player
+    private bool isDragging = false; // To check if left mouse button is pressed
+    private Camera cam; // Reference to the camera component
+    private float currentZoom; // Current zoom level
+
+    void Start()
     {
-        // The target the camera will follow (e.g., the Player)
-        [SerializeField] private Transform target;
-
-        // Adjustable parameters for distance and rotation
-        [Header("Camera Positioning")]
-        [SerializeField] private Vector3 offset = new Vector3(0.1f, 0.1f, -10f);
-        [SerializeField] private float rotationSpeed = 5f;
-
-        [Header("Follow Settings")]
-        [SerializeField] private bool smoothFollow = true;
-        [SerializeField] private float followSpeed = 10f;
-
-        [Header("Zoom Settings")]
-        [SerializeField] private float zoomSpeed = 5f;
-        [SerializeField] private float minZoom = 2f;
-        [SerializeField] private float maxZoom = 20f;
-        [SerializeField] private float currentZoom;
-
-        private void Start()
+        if (player == null)
         {
-            currentZoom = offset.magnitude;
+            Debug.LogError("Player reference is not set on FollowCamera script.");
+            return;
         }
 
-        private void LateUpdate()
+        cam = Camera.main;
+        offset = transform.position - player.position;
+        currentZoom = offset.magnitude;
+    }
+
+    void Update()
+    {
+        HandleMouseInput();
+    }
+
+    void LateUpdate()
+    {
+        if (player == null) return;
+
+        if (!isDragging)
         {
-            if (target == null)
-            {
-                Debug.LogWarning("FollowCamera: No target assigned!");
-                return;
-            }
-
-            // Handle zoom input
-            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-            currentZoom -= scrollInput * zoomSpeed;
-            currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
-
-            // Adjust the offset based on the current zoom
-            offset = offset.normalized * currentZoom;
-
-            // Calculate the desired position
-            Vector3 desiredPosition = target.position + offset;
-
-            // Move the camera to the desired position
-            if (smoothFollow)
-            {
-                transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
-            }
-            else
-            {
-                transform.position = desiredPosition;
-            }
-
-            // Smoothly rotate to look at the target
-            Quaternion desiredRotation = Quaternion.LookRotation(target.position - transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+            SmoothFollowPlayer();
         }
+    }
+
+    void HandleMouseInput()
+    {
+        // Rotate camera when left mouse button is held
+        /*
+        if (Input.GetMouseButton(0))
+        {
+            isDragging = true;
+            float horizontal = Input.GetAxis("Mouse X") * rotationSpeed;
+            float vertical = -Input.GetAxis("Mouse Y") * rotationSpeed;
+
+            transform.RotateAround(player.position, Vector3.up, horizontal);
+            transform.RotateAround(player.position, transform.right, vertical);
+        }
+        else
+        {
+            isDragging = false;
+        }
+        */
+        // Zoom in and out with the mouse wheel
+        float scroll = Input.GetAxis("Mouse ScrollWheel") * scrollSensitivity;
+        currentZoom = Mathf.Clamp(currentZoom - scroll, minZoom, maxZoom);
+        offset = offset.normalized * currentZoom;
+    }
+
+    void SmoothFollowPlayer()
+    {
+        Vector3 targetPosition = player.position + offset;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+        transform.LookAt(player);
     }
 }
