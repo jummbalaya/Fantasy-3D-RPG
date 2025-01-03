@@ -9,6 +9,8 @@ namespace RPG.Combat
         [SerializeField] private float weaponRange = 2f;
         [SerializeField] private float timeBetweenAttacks = 1f;
         [SerializeField] private float weaponDamage = 5f;
+        [Range(0,1)]
+        [SerializeField] private float enemyChaseFraction = 0.995f;
 
         private float timeSinceLastAttack = Mathf.Infinity;
         private Health target;
@@ -29,7 +31,7 @@ namespace RPG.Combat
 
             if (!IsInRange())
             {
-                mover.MoveTo(target.transform.position);
+                mover.MoveTo(target.transform.position, enemyChaseFraction);
             }
             else
             {
@@ -69,6 +71,7 @@ namespace RPG.Combat
             animator.ResetTrigger("attack");
             animator.SetTrigger("stopAttack");
             target = null;
+            GetComponent<Mover>().Cancel();
         }
 
         private bool IsInRange()

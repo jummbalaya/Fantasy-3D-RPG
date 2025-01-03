@@ -76,19 +76,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.25
+      value: 6.6931086
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000019073486
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.9
+      value: 32.490047
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.5375801
+      value: -0.53758013
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalRotation.x
@@ -96,7 +96,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.84321266
+      value: 0.8432127
       objectReference: {fileID: 0}
     - target: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_LocalRotation.z
@@ -124,7 +124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6348759242464452315, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: healthPoints
-      value: 10
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7636116798340525817, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}
       propertyPath: m_Name
@@ -174,6 +174,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseDistance: 5
+  standByTime: 3
+  patrolPath: {fileID: 0}
+  waypointTolerance: 1
+  waypointDwellTime: 3
 --- !u!4 &5120210233456425248 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2893573203816834018, guid: 45fe0bed49850c64ea8e056d2f1cd498, type: 3}

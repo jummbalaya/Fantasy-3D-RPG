@@ -12,6 +12,8 @@ namespace RPG.Control
         private Fighter fighter;
         private Health health;
 
+        private float playerSpeedFraction = 1f;
+
         private void Awake()
         {
             mover = GetComponent<Mover>();
@@ -58,7 +60,7 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButton(0))
                 {
-                    mover.StartMoveAction(hit.point);
+                    mover.StartMoveAction(hit.point, playerSpeedFraction);
                 }
                 return true;
             }
